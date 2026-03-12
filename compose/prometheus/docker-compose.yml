@@ -1,0 +1,29 @@
+services:
+  inf-prometheus:
+    image: prom/prometheus:latest
+    container_name: inf-prometheus
+    restart: unless-stopped
+    networks:
+      - ch-net
+      - dwh-net
+    ports:
+      - '39090:9090'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - inf-prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=30d'  # Ограничивает хранение данных 30 днями
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:9090/-/healthy']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  inf-prometheus-data:
+    name: inf-prometheus-data
+    external: false

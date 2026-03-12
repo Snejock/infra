@@ -1,0 +1,20 @@
+services:
+  inf-cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: inf-cadvisor
+    restart: unless-stopped
+    privileged: true
+    networks:
+      - ch-net
+      - dwh-net
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      - '--docker_only=true'
+      - '--housekeeping_interval=10s'

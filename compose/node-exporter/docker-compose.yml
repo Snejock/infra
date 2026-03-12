@@ -1,0 +1,21 @@
+services:
+  inf-node-exporter:
+    image: prom/node-exporter:latest
+    container_name: inf-node-exporter
+    restart: unless-stopped
+    pid: host
+    network_mode: host
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:9100/']
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s

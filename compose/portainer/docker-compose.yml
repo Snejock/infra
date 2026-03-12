@@ -1,0 +1,20 @@
+services:
+  inf-portainer:
+    container_name: inf-portainer
+    image: portainer/portainer-ce:latest
+    restart: unless-stopped
+    networks:
+      - ch-net
+      - dwh-net
+    ports:
+      - '38000:8000'
+      - '39443:9443'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - inf-portainer-data:/data
+    command: -H unix:///var/run/docker.sock
+
+volumes:
+  inf-portainer-data:
+    name: inf-portainer-data
+    external: false
