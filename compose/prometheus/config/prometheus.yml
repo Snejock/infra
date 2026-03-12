@@ -15,9 +15,9 @@ scrape_configs:
         target_label: instance
         replacement: 'odin'
 
-  - job_name: 'cadvisor'
+  - job_name: 'inf-cadvisor'
     static_configs:
-      - targets: [ 'cadvisor:8080' ]
+      - targets: [ 'inf-cadvisor:8080' ]
     relabel_configs:
       - source_labels: []
         target_label: instance
