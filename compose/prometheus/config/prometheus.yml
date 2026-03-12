@@ -21,3 +21,6 @@ scrape_configs:
       - targets: [ 'inf-cadvisor:8080' ]
         labels:
           instance: 'odin'
+      - targets: [ '192.168.1.15:8080' ]
+        labels:
+          instance: 'loki'
