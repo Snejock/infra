@@ -4,6 +4,7 @@ services:
     container_name: inf-cadvisor
     restart: unless-stopped
     privileged: true
+    network_mode: host
     networks:
       - ch-net
       - dwh-net
