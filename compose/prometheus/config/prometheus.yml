@@ -11,24 +11,24 @@ scrape_configs:
     static_configs:
       - targets: ['host.docker.internal:9100']
         labels:
-          instance: 'odin'
+          # instance: 'odin'
           nodename: 'odin'
       - targets: ['192.168.1.15:9100']
         labels:
-          instance: 'loki'
+          # instance: 'loki'
           nodename: 'loki'
       - targets: ['45.12.139.240:9100']
         labels:
-          instance: 'vm-1'
+          # instance: 'vm-1'
           nodename: 'vm-1'
 
   - job_name: 'cadvisor'
     static_configs:
       - targets: ['inf-cadvisor:8080']
         labels:
-          instance: 'odin'
+          # instance: 'odin'
           nodename: 'odin'
       - targets: ['192.168.1.15:8080']
         labels:
-          instance: 'loki'
+          # instance: 'loki'
           nodename: 'loki'
