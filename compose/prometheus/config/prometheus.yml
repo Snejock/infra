@@ -20,7 +20,7 @@ scrape_configs:
       - targets: ['45.12.139.240:9100']
         labels:
           instance: 'vm-1'
-          nodename: 'vm-1'
+          # nodename: 'vm-1'
 
   - job_name: 'cadvisor'
     static_configs:
