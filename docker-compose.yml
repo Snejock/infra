@@ -1,11 +1,11 @@
 name: infra
 
 include:
+  - path: ./compose/cadvisor/docker-compose.yml
   - path: ./compose/grafana/docker-compose.yml
   - path: ./compose/node-exporter/docker-compose.yml
   - path: ./compose/prometheus/docker-compose.yml
   - path: ./compose/portainer/docker-compose.yml
-  - path: ./compose/cadvisor/docker-compose.yml
 
 networks:
   ch-net:
