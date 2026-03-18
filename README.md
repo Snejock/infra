@@ -43,10 +43,10 @@ docker network create ch-net
 
 ```bash
 # Создаем директорию рекурсивно
-sudo mkdir -p /mnt/data/projects/infra/volumes/prometheus
+sudo mkdir -p /media/data/projects/infra/compose/prometheus/config
 
 # Создаем файл prometheus.yml
-sudo nano /mnt/data/projects/infra/volumes/prometheus/prometheus.yml
+sudo nano /media/data/projects/infra/compose/prometheus/config/prometheus.yml
 ```
 
 Вставьте в этот файл минимальную конфигурацию, которая будет собирать метрики с `node-exporter`:
@@ -64,26 +64,34 @@ scrape_configs:
   - job_name: 'node-exporter'
     static_configs:
       - targets: ['host.docker.internal:9100']
-    relabel_configs:
-      - source_labels: []
-        target_label: instance
-        replacement: 'odin'
+        labels:
+          instance: 'odin'
+          # nodename: 'odin'
+      - targets: ['192.168.1.15:9100']
+        labels:
+          instance: 'loki'
+          # nodename: 'loki'
+      - targets: ['45.12.139.240:9100']
+        labels:
+          instance: 'vm-1'
+          # nodename: 'vm-1'
 
   - job_name: 'cadvisor'
     static_configs:
-      - targets: ['cadvisor:8080']
-    relabel_configs:
-      - source_labels: []
-        target_label: instance
-        replacement: 'odin'
+      - targets: ['inf-cadvisor:8080']
+        labels:
+          instance: 'odin'
+      - targets: ['192.168.1.15:8080']
+        labels:
+          instance: 'loki'
 ```
 
 ## Развертывание
 
 1.  **Клонируйте репозиторий:**
     ```bash
-    git clone https://github.com/Snejock/local.infra.git
-    cd local.infra
+    git clone https://github.com/Snejock/infra.git
+    cd infra
     ```
 
 2.  **Запустите стек:**
@@ -124,7 +132,7 @@ scrape_configs:
 2.  **Добавьте Prometheus как источник данных (Data Source):**
     *   Перейдите в `Configuration` (значок шестеренки) -> `Data Sources`.
     *   Нажмите `Add data source` и выберите `Prometheus`.
-    *   В поле **URL** введите `http://prometheus:9090`. (Используйте имя сервиса, так как Grafana и Prometheus находятся в одной Docker-сети `core-net`).
+    *   В поле **URL** введите `http://inf-prometheus:9090`. (Используйте имя сервиса, так как Grafana и Prometheus находятся в одной Docker-сети).
     *   Нажмите `Save & test`. Должно появиться сообщение "Data source is working".
 
 3.  **Импортируйте готовый дашборд для Node Exporter:**
