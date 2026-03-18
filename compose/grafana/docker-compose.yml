@@ -20,4 +20,4 @@ services:
 volumes:
   inf-grafana-data:
     name: inf-grafana-data
-    external: false
+    external: true
