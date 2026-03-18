@@ -7,7 +7,7 @@ services:
       - ch-net
       - dwh-net
     ports:
-      - '38000:8000'
+      - '39000:9000'
       - '39443:9443'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
