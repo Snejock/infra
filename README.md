@@ -16,7 +16,7 @@
 | :--- | :--- | :--- |
 | **Prometheus** | `compose/prometheus/docker-compose.yml` | Собирает и хранит метрики. |
 | **Node Exporter** | `compose/node-exporter/docker-compose.yml` | Собирает метрики хост-машины (CPU, RAM, диск). Работает в режиме host network. |
-| **cAdvisor** | `compose/cadvisor/docker-compose.yml` | Экспортирует метрики Docker-контейнеров для Prometheus (внутренний сервис без внешнего порта). |
+| **cAdvisor** | `compose/cadvisor/docker-compose.yml` | Экспортирует метрики Docker-контейнеров для Prometheus. Доступен снаружи на порту `8080`. |
 | **Grafana** | `compose/grafana/docker-compose.yml` | Визуализация метрик и дашборды. |
 | **Portainer CE** | `compose/portainer/docker-compose.yml` | Веб-управление Docker (опционально, но включено). |
 
@@ -71,10 +71,12 @@ scrape_configs:
         labels:
           instance: 'loki'
           # nodename: 'loki'
-      - targets: ['45.12.139.240:9100']
+      - targets: ['45.136.58.233:9100']
         labels:
           instance: 'vm-1'
-          # nodename: 'vm-1'
+      - targets: ['192.168.1.11:9100']
+        labels:
+          instance: 'baldur'
 
   - job_name: 'cadvisor'
     static_configs:
@@ -82,6 +84,15 @@ scrape_configs:
         labels:
           instance: 'odin'
       - targets: ['192.168.1.15:8080']
+        labels:
+          instance: 'loki'
+      - targets: ['192.168.1.11:8080']
+        labels:
+          instance: 'baldur'
+
+  - job_name: 'redpanda-connect'
+    static_configs:
+      - targets: ['192.168.1.15:34195']
         labels:
           instance: 'loki'
 ```
@@ -115,7 +126,7 @@ scrape_configs:
 | :--- | :--- |
 | **Prometheus** | `http://<IP-адрес-сервера>:39090` |
 | **Grafana** | `http://<IP-адрес-сервера>:33000` |
-| **Portainer** | `https://<IP-адрес-сервера>:39443` (или Edge Agent: `http://<IP-адрес-сервера>:38000`) |
+| **Portainer** | `http://<IP-адрес-сервера>:39000` или `https://<IP-адрес-сервера>:39443` |
 | **Node Exporter** | `http://<IP-адрес-сервера>:9100/metrics` (host network, без проброса порта) |
 | **cAdvisor** | без внешнего порта (используется Prometheus по адресу `cadvisor:8080` внутри сети) |
 
