@@ -17,7 +17,7 @@ scrape_configs:
         labels:
           instance: 'loki'
           # nodename: 'loki'
-      - targets: [ '45.136.58.233:9100' ]
+      - targets: ['45.136.58.233:9100']
         labels:
           instance: 'vm-1'
           # nodename: 'vm-1'
