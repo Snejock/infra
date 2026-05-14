@@ -30,6 +30,9 @@ scrape_configs:
       - targets: ['192.168.1.15:8080']
         labels:
           instance: 'loki'
+      - targets: ['192.168.1.11:8080']
+        labels:
+          instance: 'baldur'
 
   - job_name: 'redpanda-connect'
     static_configs:
