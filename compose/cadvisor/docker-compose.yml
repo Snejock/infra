@@ -20,3 +20,14 @@ services:
     command:
       - '--docker_only=true'
       - '--housekeeping_interval=10s'
+      # 'disk' — это fsHandler: периодический du/inode-count по ПОЛНОЙ
+      # смонтированной ФС каждого контейнера (весь merged overlay, все слои,
+      # а не только writable-диф). Для образов с большим числом файлов в
+      # rootfs (например, кастомный airflow-образ — 122k файлов против 6-16k
+      # у остальных сервисов на хосте, см. compose/airflow) это стоит секунды
+      # CPU на каждый housekeeping-цикл (10с) на КАЖДЫЙ такой контейнер —
+      # именно это давало скачки CPU у cadvisor при старте airflow.
+      # container_fs_usage_bytes/inodes нигде в infra не используется
+      # (ни в дашбордах, ни в алертах) — отключаем без потери функциональности.
+      # Остальные значения — дефолт cadvisor (см. --help), просто с добавленным disk.
+      - '--disable_metrics=advtcp,cpu_topology,cpuset,hugetlb,memory_numa,process,referenced_memory,resctrl,sched,tcp,udp,disk'
